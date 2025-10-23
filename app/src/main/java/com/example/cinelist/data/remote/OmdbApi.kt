@@ -1,6 +1,5 @@
 package com.example.cinelist.data.remote
 
-import com.example.cinelist.data.remote.MovieSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

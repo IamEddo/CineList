@@ -4,17 +4,21 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items // Importação opcional, mas boa prática
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cinelist.data.local.Watchlist
-import com.example.cinelist.ui.screen.list.WatchlistListViewModel
+// A importação do ViewModel já estava correta
+// import com.example.cinelist.ui.screen.list.WatchlistListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -46,7 +50,8 @@ fun WatchlistListScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            items(watchlists) { list ->
+            // CORREÇÃO APLICADA AQUI
+            items(items = watchlists, key = { it.id }) { list ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

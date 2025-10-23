@@ -5,7 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,6 +23,13 @@ fun MovieDetailsScreen(
     movieId: Long,
     onBack: () -> Unit
 ) {
+    // CORREÇÃO: Usar o movieId para carregar os dados do filme no ViewModel.
+    // LaunchedEffect garante que isso aconteça apenas uma vez quando a tela é criada
+    // ou se o movieId mudar.
+    LaunchedEffect(movieId) {
+        viewModel.loadMovieDetails(movieId)
+    }
+
     val movie by viewModel.movie.collectAsState()
     val notes = viewModel.notes
     val context = LocalContext.current
@@ -43,7 +50,7 @@ fun MovieDetailsScreen(
                     }
                     // Botão UPDATE (Salvar)
                     IconButton(onClick = viewModel::saveNotes) {
-                        Icon(Icons.Default.Save, contentDescription = "Salvar Notas")
+                        Icon(Icons.Default.Check, contentDescription = "Salvar Notas")
                     }
                 }
             )

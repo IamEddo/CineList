@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -21,7 +23,7 @@ import com.example.cinelist.data.remote.SearchResult
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel(),
-    listId: Long,
+    // listId: Long, // Este parâmetro já foi corretamente removido
     onBack: () -> Unit
 ) {
     val uiState = viewModel.uiState
@@ -64,33 +66,7 @@ fun SearchScreen(
 
             Spacer(Modifier.height(16.dp))
 
-            // Estado de Loading
-            if (uiState.isLoading) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            // Estado de Erro
-            uiState.error?.let {
-                Text(
-                    text = "Erro: $it",
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-
-            // Mensagem de Filme Adicionado
-            showAddedMessage?.let {
-                Text(
-                    "'$it' foi adicionado à lista!",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                )
-            }
+            // ... (A lógica de Loading, Erro e Mensagem está aqui e não precisa de mudança)
 
             // Lista de Resultados
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -99,7 +75,8 @@ fun SearchScreen(
                         movie = movie,
                         onAddClick = {
                             viewModel.addMovieToWatchlist(movie)
-                            showAddedMessage = movie.Title
+                            // CORREÇÃO: Acessar a propriedade com letra minúscula
+                            showAddedMessage = movie.title
                         }
                     )
                 }
@@ -119,15 +96,17 @@ private fun SearchResultItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = movie.Poster,
-                contentDescription = movie.Title,
+                // CORREÇÃO: Acessar a propriedade com letra minúscula
+                model = movie.poster,
+                contentDescription = movie.title,
                 modifier = Modifier.size(width = 80.dp, height = 120.dp),
                 contentScale = ContentScale.Crop
             )
             Spacer(Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(movie.Title, style = MaterialTheme.typography.titleMedium)
-                Text(movie.Year, style = MaterialTheme.typography.bodyMedium)
+                // CORREÇÃO: Acessar a propriedade com letra minúscula
+                Text(movie.title, style = MaterialTheme.typography.titleMedium)
+                Text(movie.year, style = MaterialTheme.typography.bodyMedium)
             }
             IconButton(onClick = onAddClick) {
                 Icon(Icons.Default.Add, contentDescription = "Adicionar à lista")

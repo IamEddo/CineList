@@ -18,6 +18,7 @@ fun AppNavigation() {
         composable("watchlists") {
             WatchlistListScreen(
                 onNavigateToMovieList = { listId, listName ->
+                    // A navegação continua passando o listName na URL, pois o ViewModel precisa dele
                     navController.navigate("movielist/$listId/$listName")
                 }
             )
@@ -30,11 +31,9 @@ fun AppNavigation() {
             )
         ) { backStackEntry ->
             val listId = backStackEntry.arguments?.getLong("listId") ?: 0
-            val listName = backStackEntry.arguments?.getString("listName") ?: ""
             MovieListScreen(
                 listId = listId,
-                listName = listName,
-                onNavigateToSearch = { navController.navigate("search/$listId") },
+                onNavigateToSearch = { currentListId -> navController.navigate("search/$currentListId") },
                 onNavigateToDetails = { movieId -> navController.navigate("details/$movieId") },
                 onBack = { navController.popBackStack() }
             )
@@ -42,10 +41,8 @@ fun AppNavigation() {
         composable(
             route = "search/{listId}",
             arguments = listOf(navArgument("listId") { type = NavType.LongType })
-        ) { backStackEntry ->
-            val listId = backStackEntry.arguments?.getLong("listId") ?: 0
+        ) { _ -> // CORREÇÃO: 'backStackEntry' renomeado para '_'
             SearchScreen(
-                listId = listId,
                 onBack = { navController.popBackStack() }
             )
         }

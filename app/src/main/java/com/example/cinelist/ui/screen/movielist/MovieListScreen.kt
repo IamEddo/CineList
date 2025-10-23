@@ -5,25 +5,28 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.cinelist.data.local.MovieEntry
-import com.example.cinelist.ui.screen.movielist.MovieListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MovieListScreen(
     viewModel: MovieListViewModel = hiltViewModel(),
     listId: Long,
-    listName: String,
+    // CORREÇÃO: Remova o parâmetro listName, pois ele virá do ViewModel
+    // listName: String,
     onNavigateToSearch: (Long) -> Unit,
     onNavigateToDetails: (Long) -> Unit,
     onBack: () -> Unit
@@ -34,7 +37,8 @@ fun MovieListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(listName) },
+                // CORREÇÃO: Use o nome da lista vindo diretamente do ViewModel
+                title = { Text(viewModel.listName) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Voltar")
@@ -57,7 +61,7 @@ fun MovieListScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(movies) { movie ->
+            items(items = movies, key = { it.id }) { movie ->
                 Card(
                     modifier = Modifier.combinedClickable(
                         onClick = { onNavigateToDetails(movie.id) },

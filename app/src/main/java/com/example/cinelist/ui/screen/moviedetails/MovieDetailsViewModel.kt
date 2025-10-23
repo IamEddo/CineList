@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinelist.data.MovieRepository
@@ -19,11 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val repository: MovieRepository,
-    savedStateHandle: SavedStateHandle
+    private val repository: MovieRepository
+    // CORREÇÃO: O parâmetro savedStateHandle foi removido.
 ) : ViewModel() {
-
-    private val movieId: Long = checkNotNull(savedStateHandle["movieId"])
 
     private val _movie = MutableStateFlow<MovieEntry?>(null)
     val movie = _movie.asStateFlow()
@@ -31,11 +28,7 @@ class MovieDetailsViewModel @Inject constructor(
     var notes by mutableStateOf("")
         private set
 
-    init {
-        loadMovie()
-    }
-
-    private fun loadMovie() {
+    fun loadMovieDetails(movieId: Long) {
         viewModelScope.launch {
             val movieData = repository.getMovieById(movieId)
             _movie.value = movieData

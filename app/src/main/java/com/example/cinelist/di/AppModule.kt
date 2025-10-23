@@ -21,8 +21,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    // !!!!! IMPORTANTE !!!!!
-    // !!!!! COLOQUE SUA CHAVE DA API OMDb AQUI !!!!!
     private const val API_KEY = "SUA_API_KEY_AQUI"
     private const val BASE_URL = "https://www.omdbapi.com/"
 

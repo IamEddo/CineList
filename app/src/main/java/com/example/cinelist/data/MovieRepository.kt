@@ -19,8 +19,10 @@ class MovieRepository @Inject constructor(
     suspend fun searchMovies(title: String): Result<List<SearchResult>> {
         return try {
             val response = api.searchMovies(searchTerm = title, apiKey = apiKey)
-            if (response.Response == "True") {
-                Result.success(response.Search)
+            // CORREÇÃO: use 'response' em vez de 'Response'
+            if (response.response == "True") {
+                // CORREÇÃO: use 'search' em vez de 'Search'
+                Result.success(response.search)
             } else {
                 Result.failure(Exception("Filme não encontrado"))
             }
@@ -44,9 +46,10 @@ class MovieRepository @Inject constructor(
         val entry = MovieEntry(
             watchlistId = listId,
             imdbId = movie.imdbID,
-            title = movie.Title,
-            year = movie.Year,
-            posterUrl = movie.Poster
+            // CORREÇÃO: use 'title', 'year', e 'poster'
+            title = movie.title,
+            year = movie.year,
+            posterUrl = movie.poster
         )
         dao.insertMovie(entry)
     }

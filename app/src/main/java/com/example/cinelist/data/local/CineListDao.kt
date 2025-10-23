@@ -14,8 +14,9 @@ interface CineListDao {
     @Insert
     suspend fun insertWatchlist(watchlist: Watchlist)
 
-    @Update
-    suspend fun updateWatchlist(watchlist: Watchlist)
+    // CORREÇÃO: A função 'updateWatchlist' foi removida pois não está sendo utilizada.
+    // @Update
+    // suspend fun updateWatchlist(watchlist: Watchlist)
 
     @Delete
     suspend fun deleteWatchlist(watchlist: Watchlist)
